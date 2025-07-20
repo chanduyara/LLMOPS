@@ -2,3 +2,4 @@ env
 pyenv1
 .env
 document_portal.egg-info
+*.ipynb
