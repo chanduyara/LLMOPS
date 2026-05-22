@@ -1,5 +1,6 @@
 import streamlit as st
 from google.cloud import bigquery
+from google.oauth2 import service_account
 import pandas as pd
 import altair as alt
 
@@ -7,8 +8,11 @@ import altair as alt
 st.set_page_config(page_title="Stack Overflow Dashboard", layout="wide")
 st.title("📊 Top 10 Most Viewed Stack Overflow Questions (2008–2021)")
 
-# --- BigQuery client ---
-client = bigquery.Client()
+# --- BigQuery client using Streamlit secrets ---
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"]
+)
+client = bigquery.Client(credentials=credentials, project=credentials.project_id)
 
 # --- Query ---
 query = """
@@ -32,7 +36,6 @@ LIMIT 10;
 # --- Run query and load DataFrame ---
 rows = client.query(query).result()
 df = pd.DataFrame([dict(row) for row in rows])
-# df = client.query(query).to_dataframe()
 df['created'] = pd.to_datetime(df['created'])
 df['year'] = df['created'].dt.year
 
@@ -63,7 +66,7 @@ with tab1:
         y=alt.Y('count:Q', title='Number of Posts'),
         tooltip=['year', 'count']
     ).properties(title="Number of Top 10 Posts per Year")
-    st.altair_chart(chart1, width="stretch")
+    st.altair_chart(chart1, use_container_width=True)
 
     # Chart 2: Total Views per Year
     views_per_year = filtered_df.groupby('year')['view_count'].sum().reset_index()
@@ -72,7 +75,7 @@ with tab1:
         y=alt.Y('view_count:Q', title='Total Views'),
         tooltip=['year', 'view_count']
     ).properties(title="Total Views of Top 10 Posts by Year")
-    st.altair_chart(chart2, width="stretch")
+    st.altair_chart(chart2, use_container_width=True)
 
 with tab2:
     # Chart 3: Reputation vs Views
@@ -81,7 +84,7 @@ with tab2:
         y=alt.Y('view_count:Q', title='View Count'),
         tooltip=['post_title', 'owner_name', 'reputation', 'view_count']
     ).properties(title="Reputation vs View Count")
-    st.altair_chart(chart3, width="stretch")
+    st.altair_chart(chart3, use_container_width=True)
 
 with tab3:
     st.subheader("Raw Query Results")
