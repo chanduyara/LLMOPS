@@ -111,12 +111,29 @@ STATE_CENTROIDS = {
 
 # ── Data loader ───────────────────────────────────────────────────────────────
 @st.cache_data
+
 def load_data():
-    df = pd.read_excel("FiestaSales.xlsx", sheet_name="OriginalData")
+    # Ensure the file path is correct relative to this script
+    base_path = os.path.dirname(__file__)
+    file_path = os.path.join(base_path, "FiestaSales.xlsx")
+
+    # Check if file exists before reading
+    if not os.path.exists(file_path):
+        st.error(f"❌ File not found: {file_path}")
+        st.stop()
+
+    # Load and clean data
+    df = pd.read_excel(file_path, sheet_name="OriginalData")
     df['SuppDCDist'] = pd.to_numeric(df['SuppDCDist'], errors='coerce')
     df['DCCustDist'] = pd.to_numeric(df['DCCustDist'], errors='coerce')
-    df['PurchaseDate'] = pd.to_datetime(df['PurchaseDate'])
+    df['PurchaseDate'] = pd.to_datetime(df['PurchaseDate'], errors='coerce')
     df['Month'] = df['PurchaseDate'].dt.to_period('M').astype(str)
+# def load_data():
+#     df = pd.read_excel("FiestaSales.xlsx", sheet_name="OriginalData")
+#     df['SuppDCDist'] = pd.to_numeric(df['SuppDCDist'], errors='coerce')
+#     df['DCCustDist'] = pd.to_numeric(df['DCCustDist'], errors='coerce')
+#     df['PurchaseDate'] = pd.to_datetime(df['PurchaseDate'])
+#     df['Month'] = df['PurchaseDate'].dt.to_period('M').astype(str)
 
     # Impute NA SuppDCDist
     def impute(row):
