@@ -1,7 +1,7 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║         FIESTA GIFTS — STREAMLIT DASHBOARD                                 ║
-║         IMB 761 | IIMB Case Study | Data-Driven Profitability              ║
+║         Sankhya Squad | IIMB Case Study | Data-Driven Profitability              ║
 ║                                                                             ║
 ║  HOW TO RUN:                                                                ║
 ║    pip install streamlit plotly pandas openpyxl                             ║
