@@ -786,7 +786,7 @@ elif page == "📈 P&L Projection":
         {"Line Item":"Gross Income",    "FY2011":"$3,000K","FY2012":"$3,519K","Change":"+$519K"},
         {"Line Item":"Salaries",        "FY2011":"-$1,200K","FY2012":"-$1,200K","Change":"—"},
         {"Line Item":"SG&A",            "FY2011":"-$600K","FY2012":"-$570K","Change":"-$30K"},
-        {"Line Item":"DC Lease Fees",   "FY2011":"-$2,000K","FY2012":"-$1,188K","Change":f"-$912K ✓ D7"},
+        {"Line Item":"DC Lease Fees",   "FY2011":"-$2,000K","FY2012":"-$1,173K","Change":f"-$827K ✓ D7"},
         {"Line Item":"Supplier Overhead","FY2011":"—","FY2012":f"+${D3_SAVING//1000}K","Change":f"-${D3_SAVING//1000}K ✓ D3"},
         {"Line Item":"Interest",        "FY2011":"-$200K","FY2012":"-$200K","Change":"0K"},
         {"Line Item":"Total Indirect",  "FY2011":"-$4,000K","FY2012":"-$3,266K","Change":"-$734K"},
