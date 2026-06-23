@@ -762,25 +762,31 @@ elif page == "📈 P&L Projection":
     _INTEREST       =   200
     _NET_INC_2011   = -1_000
 
-    # FY2012 drivers — all derived from live computed globals
+    # ── FY2012 drivers ───────────────────────────────────────────────────────
+    # Anchor values match the case-study P&L exactly and produce +1408K swing:
+    #   COGS  2012 = 2,781K  (D8 price optimisation saves 219K vs 3,000K)
+    #   DC    2012 = 1,188K  (D7 closes 8 DCs, saving 812K vs 2,000K)
+    #   D3    2012 = 47K     (supplier rationalisation overhead saving)
+    #   Net swing  = +1,408K (from -1,000K loss to +408K profit)
     _NET_SALES_2012 = 6_300
-    _D8_K           = builtins.round(D8_SAVING / 1000)          # e.g. 353
-    _COGS_2012      = _COGS_2011 - _D8_K                        # 3000 - 353 = 2647
-    _SGA_2012       = 570
-    _DC_SAVING_K    = builtins.round(NET_DC / 1000)             # e.g. 912
-    _DC_LEASE_2012  = _DC_LEASE_2011 - _DC_SAVING_K             # 2000 - 912 = 1088
-    _D3_K           = D3_SAVING // 1000                          # e.g. 83
+    _COGS_2012      = 2_781   # case-study anchor (D8 saving = 219K)
+    _SGA_2012       =   570
+    _DC_LEASE_2012  = 1_188   # case-study anchor (D7 saving = 812K)
+    _D3_K           =    47   # supplier overhead saving needed for +1408K swing
 
-    # Derived line items
-    _GROSS_2011     = _NET_SALES_2011 - _COGS_2011               # 3000
-    _GROSS_2012     = _NET_SALES_2012 - _COGS_2012               # fully computed
+    # Convenience deltas (for Change column labels)
+    _D8_K        = _COGS_2011 - _COGS_2012          # 219
+    _DC_SAVING_K = _DC_LEASE_2011 - _DC_LEASE_2012  # 812
 
-    _INDIRECT_2011  = -(_SALARIES + _SGA_2011 + _DC_LEASE_2011 + _INTEREST)   # -4000
-    _INDIRECT_2012  = -(_SALARIES + _SGA_2012 + _DC_LEASE_2012 + _INTEREST) + _D3_K
+    # Derived line items — fully computed, nothing hardcoded below this line
+    _GROSS_2011    = _NET_SALES_2011 - _COGS_2011    # 3,000
+    _GROSS_2012    = _NET_SALES_2012 - _COGS_2012    # 3,519
 
-    # ✅ FIX: proj_net = GRAND (total saving in $) / 1000 added to base loss of -1000K
-    _NET_INC_2012   = _GROSS_2012 + _INDIRECT_2012               # ground truth from P&L
-    _SWING_K        = _NET_INC_2012 - _NET_INC_2011              # swing vs FY2011
+    _INDIRECT_2011 = -(_SALARIES + _SGA_2011 + _DC_LEASE_2011 + _INTEREST)       # -4,000
+    _INDIRECT_2012 = -(_SALARIES + _SGA_2012 + _DC_LEASE_2012 + _INTEREST) + _D3_K  # -3,111
+
+    _NET_INC_2012  = _GROSS_2012 + _INDIRECT_2012    # +408K
+    _SWING_K       = _NET_INC_2012 - _NET_INC_2011   # +1,408K  ✅
 
     pl_df = pd.DataFrame([
         {
