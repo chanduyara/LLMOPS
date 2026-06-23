@@ -220,7 +220,7 @@ GRAND     = NET_DC + D3_SAVING + D8_SAVING
 
 # ── Sidebar navigation ────────────────────────────────────────────────────────
 st.sidebar.markdown("## 🎁 Fiesta Gifts")
-st.sidebar.markdown("**IMB 761 · IIMB Case Study**")
+st.sidebar.markdown("**Sankhya Squad · IIMB Case Study**")
 st.sidebar.markdown("---")
 page = st.sidebar.radio("Navigate", [
     "🏠 Overview",
